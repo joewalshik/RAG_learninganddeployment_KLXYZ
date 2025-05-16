@@ -26,14 +26,13 @@ It allows users to upload `.txt`, `.pdf`, or `.docx` documents and ask natural l
 
 
 ---
-
+## 🧪 Setup Instructions
 
 # Install Ollama and pull a model
 
 ollama run mistral 
 (You can also use llama2, gemma, or any other supported local model.)
 
-## 🧪 Setup Instructions
 
 # **Create a virtual environment** (recommended):
 
