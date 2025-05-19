@@ -123,9 +123,9 @@ streamlit run rag_streamlit_app.py
 
 ---
 
-## 📸 Screenshots (Optional)
+## 📸 Screenshots 
 
-> _You can add screenshots here to demo the interface or responses._
+
 
 ---
 
