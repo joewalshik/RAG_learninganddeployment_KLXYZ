@@ -125,6 +125,7 @@ streamlit run rag_streamlit_app.py
 
 ## 📸 Screenshots 
 
+![image](https://github.com/user-attachments/assets/fc137246-c61f-43c2-a545-17732b4f156e)
 
 
 ---
