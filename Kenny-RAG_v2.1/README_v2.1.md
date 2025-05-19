@@ -45,7 +45,7 @@ This is an enhanced version of a fully local Retrieval-Augmented Generation (RAG
 ```bash
 # Windows
 python -m venv venv
-.env\Scriptsctivate
+.venv\Scripts\activate
 
 # macOS/Linux
 python3 -m venv venv
