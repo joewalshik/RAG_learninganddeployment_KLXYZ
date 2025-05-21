@@ -10,7 +10,7 @@ from langchain_core.documents import Document
 import os
 import yaml
 
-# === Load and split documents ===
+# Load and split documents
 loader = DirectoryLoader("docs/", glob="**/*.txt", loader_cls=TextLoader)
 docs = loader.load()
 
@@ -22,7 +22,7 @@ for doc in docs:
         chunk.metadata["page"] = i + 1
         chunks.append(chunk)
 
-# === Embeddings ===
+# Embeddings
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 # === Load or create vector index ===
@@ -32,7 +32,7 @@ else:
     vectorstore = FAISS.from_documents(chunks[:50], embedding_model)
     vectorstore.save_local("faiss_index")
 
-# === LLM & Prompt ===
+# LLM & Prompt
 llm = OllamaLLM(model="mistral")
 prompt = ChatPromptTemplate.from_template(
     "Answer the question based only on the context below. "
@@ -43,14 +43,14 @@ prompt = ChatPromptTemplate.from_template(
 document_chain = create_stuff_documents_chain(llm=llm, prompt=prompt)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
 
-# === Re-ranking step ===
+# Re-ranking step
 def rerank_documents(docs: list[Document], query: str, top_n: int = 5) -> list[Document]:
     def score(doc):
         text = doc.page_content.lower()
         return sum(1 for word in query.lower().split() if word in text)
     return sorted(docs, key=score, reverse=True)[:top_n]
 
-# === Evaluation Mode ===
+# Evaluation Mode
 def evaluate_from_yaml(yaml_path: str):
     with open(yaml_path, "r", encoding="utf-8") as f:
         test_set = yaml.safe_load(f)
@@ -68,7 +68,7 @@ def evaluate_from_yaml(yaml_path: str):
         print(f"\nQ: {question}\n→ ✅ Matched {match_count}/{len(expected_keywords)} expected keywords")
         print(f"→ Answer: {result}")
 
-# === CLI Chat Loop ===
+# CLI Chat Loop
 if os.path.exists("test_questions.yaml"):
     evaluate_from_yaml("test_questions.yaml")
 else:
