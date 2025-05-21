@@ -10,22 +10,22 @@ from langchain_community.llms import Ollama
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 
-# --- App setup ---
+# App setup
 st.set_page_config(page_title="🧠 NCL RAG Chat", layout="centered")
 st.title("🧠 NCL RAG Chat")
 
-# --- State defaults ---
+# State defaults
 st.session_state.setdefault("qa_chain", None)
 st.session_state.setdefault("messages", [])
 
-# --- Upload files ---
+# Upload files
 uploaded_files = st.file_uploader(
     "Upload your TXT / PDF / DOCX files", 
     accept_multiple_files=True, 
     type=["txt", "pdf", "docx"]
 )
 
-# --- Helper: Load & Split files ---
+# Helper: Load & Split files
 @st.cache_resource
 def load_documents_and_vectorstore(uploaded_files):
     temp_dir = tempfile.mkdtemp()
@@ -54,7 +54,7 @@ def load_documents_and_vectorstore(uploaded_files):
     vectorstore = FAISS.from_documents(all_chunks, embeddings)
     return vectorstore
 
-# --- Load pipeline if files uploaded ---
+# Load pipeline if files uploaded
 if uploaded_files:
     with st.spinner("Processing documents..."):
         vectorstore = load_documents_and_vectorstore(uploaded_files)
@@ -63,12 +63,12 @@ if uploaded_files:
         memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
         st.session_state.qa_chain = ConversationalRetrievalChain.from_llm(llm, retriever=retriever, memory=memory)
 
-# --- Display chat history ---
+# Display chat history
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# --- Chat input ---
+# Chat input
 user_query = st.chat_input("Ask a question...")
 
 if user_query:
