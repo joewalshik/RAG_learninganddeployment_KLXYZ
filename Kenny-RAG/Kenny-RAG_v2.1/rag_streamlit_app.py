@@ -16,7 +16,7 @@ from langchain.chains import LLMChain
 st.set_page_config(page_title="🔍 Local RAG App", layout="centered")
 st.title("🔍 Local RAG Chat App with Evaluation")
 
-# === Load and split documents ===
+# Load and split documents
 @st.cache_resource
 def load_chunks():
     loader = DirectoryLoader("docs/", glob="**/*.txt", loader_cls=TextLoader)
@@ -32,17 +32,17 @@ def load_chunks():
 
 chunks = load_chunks()
 
-# === Embeddings ===
+# Embeddings
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-# === Load or create vector index ===
+# Load or create vector index
 if os.path.exists("faiss_index"):
     vectorstore = FAISS.load_local("faiss_index", embedding_model, allow_dangerous_deserialization=True)
 else:
     vectorstore = FAISS.from_documents(chunks[:50], embedding_model)
     vectorstore.save_local("faiss_index")
 
-# === LLM & Prompt ===
+# LLM & Prompt
 llm = OllamaLLM(model="mistral")
 prompt = ChatPromptTemplate.from_template(
     "Answer the question based only on the context below. "
@@ -73,14 +73,14 @@ Standalone question:
 
 rewrite_chain = LLMChain(llm=llm, prompt=rewrite_prompt)
 
-# === Re-ranking step ===
+# Re-ranking step
 def rerank_documents(docs: list[Document], query: str, top_n: int = 5) -> list[Document]:
     def score(doc):
         text = doc.page_content.lower()
         return sum(1 for word in query.lower().split() if word in text)
     return sorted(docs, key=score, reverse=True)[:top_n]
 
-# === Evaluation ===
+# Evaluation
 def evaluate_from_yaml(yaml_path: str):
     with open(yaml_path, "r", encoding="utf-8") as f:
         test_set = yaml.safe_load(f)
@@ -103,10 +103,10 @@ def evaluate_from_yaml(yaml_path: str):
         })
     return results
 
-# === Streamlit Tabs ===
+# Streamlit Tabs
 tabs = st.tabs(["🔎 Ask", "🧪 Evaluate"])
 
-# === Chat Tab ===
+# Chat Tab
 with tabs[0]:
     st.subheader("Chat with Your Local Docs")
     query = st.text_input("Ask a question:", key="user_query")
@@ -133,7 +133,7 @@ if query:
     st.session_state.chat_history = chat_history + f"\nQ: {query}\nA: {result}"
 
 
-# === Evaluation Tab ===
+# Evaluation Tab
 with tabs[1]:
     st.subheader("Evaluate with Predefined Questions")
     if os.path.exists("test_questions.yaml"):
