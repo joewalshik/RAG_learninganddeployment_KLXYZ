@@ -2,6 +2,9 @@
 
 Liz-RAG is a fully local Retrieval-Augmented Generation (RAG) chatbot that allows users to ask natural language questions based on custom text documents. It uses FAISS for semantic search, HuggingFace embeddings for vector representation, and the Mistral language model running locally via Ollama for answer generation. The system is entirely offline and provides a web interface via Streamlit.
 
+<img width="673" alt="image" src="https://github.com/user-attachments/assets/cd58ab24-c266-49e0-8554-689d5487d850" />
+
+
 ## Features
 
 The application supports custom `.txt` documents, splits them into text chunks for embedding using sentence-transformers, stores the resulting vectors using FAISS, and uses a locally hosted Mistral model to answer user questions. The entire pipeline is orchestrated using LangChain, and the frontend is implemented with Streamlit to provide an interactive user interface.
