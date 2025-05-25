@@ -1,0 +1,17 @@
+- question: What is the role of the CEO?
+  expected_keywords:
+    - strategic direction
+    - success
+    - oversight
+
+- question: When was the company founded?
+  expected_keywords:
+    - founded
+    - year
+    - established
+
+- question: Who are the main stakeholders?
+  expected_keywords:
+    - stakeholders
+    - groups
+    - involved

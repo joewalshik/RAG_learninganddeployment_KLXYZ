@@ -1,0 +1,5 @@
+**/rag_venv/
+**/__pycache__/
+**/.idea/
+*.pyc
+.DS_Store
